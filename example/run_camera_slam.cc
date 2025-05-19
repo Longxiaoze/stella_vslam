@@ -4,9 +4,9 @@
 #include "socket_publisher/publisher.h"
 #endif
 
-#include "openvslam/system.h"
-#include "openvslam/config.h"
-#include "openvslam/util/stereo_rectifier.h"
+#include "stella_vslam/system.h"
+#include "stella_vslam/config.h"
+#include "stella_vslam/util/stereo_rectifier.h"
 
 #include <iostream>
 #include <chrono>
@@ -27,14 +27,14 @@
 #include <gperftools/profiler.h>
 #endif
 
-void mono_tracking(const std::shared_ptr<openvslam::config>& cfg,
+void mono_tracking(const std::shared_ptr<stella_vslam::config>& cfg,
                    const std::string& vocab_file_path, const unsigned int cam_num, const std::string& mask_img_path,
                    const float scale, const std::string& map_db_path) {
     // load the mask image
     const cv::Mat mask = mask_img_path.empty() ? cv::Mat{} : cv::imread(mask_img_path, cv::IMREAD_GRAYSCALE);
 
     // build a SLAM system
-    openvslam::system SLAM(cfg, vocab_file_path);
+    stella_vslam::system SLAM(cfg, vocab_file_path);
     // startup the SLAM process
     SLAM.startup();
 
@@ -119,12 +119,12 @@ void mono_tracking(const std::shared_ptr<openvslam::config>& cfg,
     std::cout << "mean tracking time: " << total_track_time / track_times.size() << "[s]" << std::endl;
 }
 
-void stereo_tracking(const std::shared_ptr<openvslam::config>& cfg,
+void stereo_tracking(const std::shared_ptr<stella_vslam::config>& cfg,
                      const std::string& vocab_file_path, const unsigned int cam_num, const std::string& mask_img_path,
                      const float scale, const std::string& map_db_path) {
     const cv::Mat mask = mask_img_path.empty() ? cv::Mat{} : cv::imread(mask_img_path, cv::IMREAD_GRAYSCALE);
     // build a SLAM system
-    openvslam::system SLAM(cfg, vocab_file_path);
+    stella_vslam::system SLAM(cfg, vocab_file_path);
     // startup the SLAM process
     SLAM.startup();
 
@@ -146,7 +146,7 @@ void stereo_tracking(const std::shared_ptr<openvslam::config>& cfg,
         }
     }
 
-    const openvslam::util::stereo_rectifier rectifier(cfg);
+    const stella_vslam::util::stereo_rectifier rectifier(cfg);
 
     cv::Mat frames[2];
     cv::Mat frames_rectified[2];
@@ -266,9 +266,9 @@ int main(int argc, char* argv[]) {
     }
 
     // load configuration
-    std::shared_ptr<openvslam::config> cfg;
+    std::shared_ptr<stella_vslam::config> cfg;
     try {
-        cfg = std::make_shared<openvslam::config>(config_file_path->value());
+        cfg = std::make_shared<stella_vslam::config>(config_file_path->value());
     }
     catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
@@ -280,11 +280,11 @@ int main(int argc, char* argv[]) {
 #endif
 
     // run tracking
-    if (cfg->camera_->setup_type_ == openvslam::camera::setup_type_t::Monocular) {
+    if (cfg->camera_->setup_type_ == stella_vslam::camera::setup_type_t::Monocular) {
         mono_tracking(cfg, vocab_file_path->value(), cam_num->value(), mask_img_path->value(),
                       scale->value(), map_db_path->value());
     }
-    else if (cfg->camera_->setup_type_ == openvslam::camera::setup_type_t::Stereo) {
+    else if (cfg->camera_->setup_type_ == stella_vslam::camera::setup_type_t::Stereo) {
         stereo_tracking(cfg, vocab_file_path->value(), cam_num->value(), mask_img_path->value(),
                         scale->value(), map_db_path->value());
     }

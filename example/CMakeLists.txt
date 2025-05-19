@@ -35,32 +35,60 @@ endif()
 
 set(EXECUTABLE_TARGETS "")
 
-add_executable(run_camera_slam run_camera_slam.cc)
-list(APPEND EXECUTABLE_TARGETS run_camera_slam)
+# plp: 不编译这个代码
+# add_executable(run_camera_slam run_camera_slam.cc)
+# list(APPEND EXECUTABLE_TARGETS run_camera_slam)
 
-add_executable(run_camera_localization run_camera_localization.cc)
-list(APPEND EXECUTABLE_TARGETS run_camera_localization)
+# add_executable(run_camera_localization run_camera_localization.cc)
+# list(APPEND EXECUTABLE_TARGETS run_camera_localization)
 
 add_executable(run_image_slam run_image_slam.cc util/image_util.cc)
 list(APPEND EXECUTABLE_TARGETS run_image_slam)
 
+# plp: 添加一个新的可执行文件 run_image_slam_planeSeg 使用平面分割
+add_executable(run_image_slam_planeSeg run_image_slam_planeSeg.cc util/image_planeSeg_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_image_slam_planeSeg)
+
 add_executable(run_image_localization run_image_localization.cc util/image_util.cc)
 list(APPEND EXECUTABLE_TARGETS run_image_localization)
 
-add_executable(run_video_slam run_video_slam.cc)
-list(APPEND EXECUTABLE_TARGETS run_video_slam)
+# FW: Re-localization using point and line cloud
+# plp: 添加一个新的可执行文件 run_image_localization_point_line 使用点线特征地图进行重定位
+add_executable(run_image_localization_point_line run_image_localization_point_line.cc util/image_util.cc util/tum_rgbd_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_image_localization_point_line)
 
-add_executable(run_video_localization run_video_localization.cc)
-list(APPEND EXECUTABLE_TARGETS run_video_localization)
+# plp: 不编译这个代码   
+# add_executable(run_video_slam run_video_slam.cc)
+# list(APPEND EXECUTABLE_TARGETS run_video_slam)
+
+# add_executable(run_video_localization run_video_localization.cc)
+# list(APPEND EXECUTABLE_TARGETS run_video_localization)
 
 add_executable(run_euroc_slam run_euroc_slam.cc util/euroc_util.cc)
 list(APPEND EXECUTABLE_TARGETS run_euroc_slam)
+# plp: 添加一个新的可执行文件 run_euroc_slam_with_line 使用线特征进行slam
+add_executable(run_euroc_slam_with_line run_euroc_slam_with_line.cc util/euroc_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_euroc_slam_with_line)
+# plp: 添加一个新的可执行文件 run_euroc_slam_planeSeg 使用平面分割进行slam
+add_executable(run_euroc_slam_planeSeg run_euroc_slam_planeSeg.cc util/euroc_planeSeg_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_euroc_slam_planeSeg)
 
 add_executable(run_kitti_slam run_kitti_slam.cc util/kitti_util.cc)
 list(APPEND EXECUTABLE_TARGETS run_kitti_slam)
+# plp: 添加一个新的可执行文件 run_kitti_slam_with_line 使用线特征进行slam
+add_executable(run_kitti_slam_with_line run_kitti_slam_with_line.cc util/kitti_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_kitti_slam_with_line)
 
 add_executable(run_tum_rgbd_slam run_tum_rgbd_slam.cc util/tum_rgbd_util.cc)
 list(APPEND EXECUTABLE_TARGETS run_tum_rgbd_slam)
+# FW: run tum_rgbd_slam with planar segmentation (monocular/RGBD)
+# plp: 添加一个新的可执行文件 run_tum_rgbd_slam_planeSeg 使用平面分割进行slam
+add_executable(run_slam_planeSeg run_slam_planeSeg.cc util/planeSeg_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_slam_planeSeg)
+# FW: run tum_rgbd_slam with line segments (monocular/RGBD)
+# plp: 添加一个新的可执行文件 run_tum_rgbd_slam_with_line 使用线特征进行slam
+add_executable(run_tum_rgbd_slam_with_line run_tum_rgbd_slam_with_line.cc util/tum_rgbd_util.cc)
+list(APPEND EXECUTABLE_TARGETS run_tum_rgbd_slam_with_line)
 
 foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
     # Set output directory for executables

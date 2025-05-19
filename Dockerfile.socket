@@ -196,8 +196,8 @@ RUN set -x && \
   rm -rf /var/lib/apt/lists/*
 
 # OpenVSLAM
-COPY . /openvslam/
-WORKDIR /openvslam/
+COPY . /stella_vslam/
+WORKDIR /stella_vslam/
 RUN set -x && \
   mkdir -p build && \
   cd build && \
@@ -213,5 +213,5 @@ RUN set -x && \
   rm -rf CMakeCache.txt CMakeFiles Makefile cmake_install.cmake example src && \
   chmod -R 777 ./*
 
-WORKDIR /openvslam/build/
+WORKDIR /stella_vslam/build/
 ENTRYPOINT ["/bin/bash"]

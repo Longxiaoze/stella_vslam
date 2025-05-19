@@ -16,9 +16,9 @@ The later parts of this chapter explains what each of the commands do in more de
 
 .. code-block:: bash
 
-    # at the build directory of openvslam ...
+    # at the build directory of stella_vslam ...
     $ pwd
-    /path/to/openvslam/build/
+    /path/to/stella_vslam/build/
     $ ls
     run_video_slam   run_video_localization   lib/   ...
 

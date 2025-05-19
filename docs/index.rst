@@ -17,7 +17,7 @@
 
 |
 
-This is the `OpenVSLAM <https://github.com/xdspacelab/openvslam>`_ documentation.
+This is the `OpenVSLAM <https://github.com/xdspacelab/stella_vslam>`_ documentation.
 
 Contents
 --------
@@ -30,7 +30,7 @@ Contents
     ./simple_tutorial
     ./example
     ./docker
-    ./ros
+    ./ros_package
     ./trouble_shooting
 
 Cite Us
@@ -40,7 +40,7 @@ If you use OpenVSLAM for a publication, please cite it as:
 
 .. code-block:: bibtex
 
-    @inproceedings{openvslam2019,
+    @inproceedings{stella_vslam2019,
       author = {Sumikura, Shinya and Shibuya, Mikiya and Sakurada, Ken},
       title = {{OpenVSLAM: A Versatile Visual SLAM Framework}},
       booktitle = {Proceedings of the 27th ACM International Conference on Multimedia},

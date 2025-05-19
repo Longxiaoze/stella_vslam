@@ -10,13 +10,13 @@ Installation
 Source code
 ===========
 
-The source code can be viewed from this `GitHub repository <https://github.com/xdspacelab/openvslam>`_.
+The source code can be viewed from this `GitHub repository <https://github.com/xdspacelab/stella_vslam>`_.
 
 Cloning the repository:
 
 .. code-block:: bash
 
-       git clone https://github.com/xdspacelab/openvslam
+       git clone https://github.com/xdspacelab/stella_vslam
 
 If you are Windows 10 user, please install the dependencies and OpenVSLAM with :ref:`SocketViewer support <subsection-dependencies-socketviewer>` on `Windows Subsystem for Linux (WSL) <https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux>`__.
 We have checked the correct operation of OpenVSLAM and SocketViewer on Ubuntu 16.04 running on WSL.
@@ -336,7 +336,7 @@ When building with support for PangolinViewer, please specify the following cmak
 
 .. code-block:: bash
 
-    cd /path/to/openvslam
+    cd /path/to/stella_vslam
     mkdir build && cd build
     cmake \
         -DBUILD_WITH_MARCH_NATIVE=ON \
@@ -352,7 +352,7 @@ When building with support for SocketViewer, please specify the following cmake 
 
 .. code-block:: bash
 
-    cd /path/to/openvslam
+    cd /path/to/stella_vslam
     mkdir build && cd build
     cmake \
         -DBUILD_WITH_MARCH_NATIVE=ON \
@@ -407,7 +407,7 @@ If you plan on using SocketViewer, please setup the environment for the server w
 
 .. code-block:: bash
 
-    $ cd /path/to/openvslam/viewer
+    $ cd /path/to/stella_vslam/viewer
     $ ls
     Dockerfile  app.js  package.json  public  views
     $ npm install
@@ -420,7 +420,7 @@ Then, launch the server with ``node app.js``.
 
 .. code-block:: bash
 
-    $ cd /path/to/openvslam/viewer
+    $ cd /path/to/stella_vslam/viewer
     $ ls
     Dockerfile  app.js  node_modules  package-lock.json  package.json  public  views
     $ node app.js

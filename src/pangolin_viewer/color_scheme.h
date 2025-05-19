@@ -3,7 +3,6 @@
 
 #include <array>
 #include <string>
-#include <cctype>
 
 namespace pangolin_viewer {
 

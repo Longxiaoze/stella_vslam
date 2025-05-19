@@ -4,8 +4,8 @@
 #include "socket_publisher/publisher.h"
 #endif
 
-#include "openvslam/system.h"
-#include "openvslam/config.h"
+#include "stella_vslam/system.h"
+#include "stella_vslam/config.h"
 
 #include <iostream>
 #include <chrono>
@@ -25,7 +25,7 @@
 #include <gperftools/profiler.h>
 #endif
 
-void mono_localization(const std::shared_ptr<openvslam::config>& cfg,
+void mono_localization(const std::shared_ptr<stella_vslam::config>& cfg,
                        const std::string& vocab_file_path, const std::string& video_file_path, const std::string& mask_img_path,
                        const std::string& map_db_path, const bool mapping,
                        const unsigned int frame_skip, const bool no_sleep, const bool auto_term) {
@@ -33,7 +33,7 @@ void mono_localization(const std::shared_ptr<openvslam::config>& cfg,
     const cv::Mat mask = mask_img_path.empty() ? cv::Mat{} : cv::imread(mask_img_path, cv::IMREAD_GRAYSCALE);
 
     // build a SLAM system
-    openvslam::system SLAM(cfg, vocab_file_path);
+    stella_vslam::system SLAM(cfg, vocab_file_path);
     // load the prebuilt map
     SLAM.load_map_database(map_db_path);
     // startup the SLAM process (it does not need initialization of a map)
@@ -186,9 +186,9 @@ int main(int argc, char* argv[]) {
     }
 
     // load configuration
-    std::shared_ptr<openvslam::config> cfg;
+    std::shared_ptr<stella_vslam::config> cfg;
     try {
-        cfg = std::make_shared<openvslam::config>(config_file_path->value());
+        cfg = std::make_shared<stella_vslam::config>(config_file_path->value());
     }
     catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
@@ -200,7 +200,7 @@ int main(int argc, char* argv[]) {
 #endif
 
     // run localization
-    if (cfg->camera_->setup_type_ == openvslam::camera::setup_type_t::Monocular) {
+    if (cfg->camera_->setup_type_ == stella_vslam::camera::setup_type_t::Monocular) {
         mono_localization(cfg, vocab_file_path->value(), video_file_path->value(), mask_img_path->value(),
                           map_db_path->value(), mapping->is_set(),
                           frame_skip->value(), no_sleep->is_set(), auto_term->is_set());

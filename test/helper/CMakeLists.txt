@@ -1,5 +1,6 @@
 # Create test helper library
 add_library(test_helper
+            SHARED
             bearing_vector.h
             keypoint.h
             landmark.h

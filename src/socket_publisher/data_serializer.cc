@@ -1,9 +1,9 @@
 #include "socket_publisher/data_serializer.h"
 
-#include "openvslam/data/keyframe.h"
-#include "openvslam/data/landmark.h"
-#include "openvslam/publish/frame_publisher.h"
-#include "openvslam/publish/map_publisher.h"
+#include "stella_vslam/data/keyframe.h"
+#include "stella_vslam/data/landmark.h"
+#include "stella_vslam/publish/frame_publisher.h"
+#include "stella_vslam/publish/map_publisher.h"
 
 #include <forward_list>
 
@@ -16,8 +16,8 @@ namespace socket_publisher {
 
 std::string data_serializer::serialized_reset_signal_{};
 
-data_serializer::data_serializer(const std::shared_ptr<openvslam::publish::frame_publisher>& frame_publisher,
-                                 const std::shared_ptr<openvslam::publish::map_publisher>& map_publisher,
+data_serializer::data_serializer(const std::shared_ptr<stella_vslam::publish::frame_publisher>& frame_publisher,
+                                 const std::shared_ptr<stella_vslam::publish::map_publisher>& map_publisher,
                                  const unsigned int image_width, const unsigned int image_height)
     : frame_publisher_(frame_publisher), map_publisher_(map_publisher),
       image_width_(image_width), image_height_(image_height),
@@ -46,11 +46,11 @@ std::string data_serializer::serialize_messages(const std::vector<std::string>& 
 }
 
 std::string data_serializer::serialize_map_diff() {
-    std::vector<openvslam::data::keyframe*> keyframes;
+    std::vector<stella_vslam::data::keyframe*> keyframes;
     map_publisher_->get_keyframes(keyframes);
 
-    std::vector<openvslam::data::landmark*> all_landmarks;
-    std::set<openvslam::data::landmark*> local_landmarks;
+    std::vector<stella_vslam::data::landmark*> all_landmarks;
+    std::set<stella_vslam::data::landmark*> local_landmarks;
     map_publisher_->get_landmarks(all_landmarks, local_landmarks);
 
     const auto current_camera_pose = map_publisher_->get_current_cam_pose();
@@ -75,10 +75,10 @@ std::string data_serializer::serialize_latest_frame(const unsigned int image_qua
     return base64_serial;
 }
 
-std::string data_serializer::serialize_as_protobuf(const std::vector<openvslam::data::keyframe*>& keyfrms,
-                                                   const std::vector<openvslam::data::landmark*>& all_landmarks,
-                                                   const std::set<openvslam::data::landmark*>& local_landmarks,
-                                                   const openvslam::Mat44_t& current_camera_pose) {
+std::string data_serializer::serialize_as_protobuf(const std::vector<stella_vslam::data::keyframe*>& keyfrms,
+                                                   const std::vector<stella_vslam::data::landmark*>& all_landmarks,
+                                                   const std::set<stella_vslam::data::landmark*>& local_landmarks,
+                                                   const stella_vslam::Mat44_t& current_camera_pose) {
     map_segment::map map;
     auto message = map.add_messages();
     message->set_tag("0");

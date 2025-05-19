@@ -1,7 +1,5 @@
 #include "pangolin_viewer/color_scheme.h"
 
-#include <cctype>
-
 namespace pangolin_viewer {
 
 color_scheme::color_scheme(const std::string& color_set_str) {

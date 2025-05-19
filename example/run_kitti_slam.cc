@@ -6,8 +6,8 @@
 #include "socket_publisher/publisher.h"
 #endif
 
-#include "openvslam/system.h"
-#include "openvslam/config.h"
+#include "stella_vslam/system.h"
+#include "stella_vslam/config.h"
 
 #include <iostream>
 #include <algorithm>
@@ -29,7 +29,7 @@
 #include <gperftools/profiler.h>
 #endif
 
-void mono_tracking(const std::shared_ptr<openvslam::config>& cfg,
+void mono_tracking(const std::shared_ptr<stella_vslam::config>& cfg,
                    const std::string& vocab_file_path, const std::string& sequence_dir_path,
                    const unsigned int frame_skip, const bool no_sleep, const bool auto_term,
                    const bool eval_log, const std::string& map_db_path) {
@@ -37,7 +37,7 @@ void mono_tracking(const std::shared_ptr<openvslam::config>& cfg,
     const auto frames = sequence.get_frames();
 
     // build a SLAM system
-    openvslam::system SLAM(cfg, vocab_file_path);
+    stella_vslam::system SLAM(cfg, vocab_file_path);
     // startup the SLAM process
     SLAM.startup();
 
@@ -140,7 +140,7 @@ void mono_tracking(const std::shared_ptr<openvslam::config>& cfg,
     std::cout << "mean tracking time: " << total_track_time / track_times.size() << "[s]" << std::endl;
 }
 
-void stereo_tracking(const std::shared_ptr<openvslam::config>& cfg,
+void stereo_tracking(const std::shared_ptr<stella_vslam::config>& cfg,
                      const std::string& vocab_file_path, const std::string& sequence_dir_path,
                      const unsigned int frame_skip, const bool no_sleep, const bool auto_term,
                      const bool eval_log, const std::string& map_db_path) {
@@ -148,7 +148,7 @@ void stereo_tracking(const std::shared_ptr<openvslam::config>& cfg,
     const auto frames = sequence.get_frames();
 
     // build a SLAM system
-    openvslam::system SLAM(cfg, vocab_file_path);
+    stella_vslam::system SLAM(cfg, vocab_file_path);
     // startup the SLAM process
     SLAM.startup();
 
@@ -302,9 +302,9 @@ int main(int argc, char* argv[]) {
     }
 
     // load configuration
-    std::shared_ptr<openvslam::config> cfg;
+    std::shared_ptr<stella_vslam::config> cfg;
     try {
-        cfg = std::make_shared<openvslam::config>(config_file_path->value());
+        cfg = std::make_shared<stella_vslam::config>(config_file_path->value());
     }
     catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
@@ -316,12 +316,12 @@ int main(int argc, char* argv[]) {
 #endif
 
     // run tracking
-    if (cfg->camera_->setup_type_ == openvslam::camera::setup_type_t::Monocular) {
+    if (cfg->camera_->setup_type_ == stella_vslam::camera::setup_type_t::Monocular) {
         mono_tracking(cfg, vocab_file_path->value(), data_dir_path->value(),
                       frame_skip->value(), no_sleep->is_set(), auto_term->is_set(),
                       eval_log->is_set(), map_db_path->value());
     }
-    else if (cfg->camera_->setup_type_ == openvslam::camera::setup_type_t::Stereo) {
+    else if (cfg->camera_->setup_type_ == stella_vslam::camera::setup_type_t::Stereo) {
         stereo_tracking(cfg, vocab_file_path->value(), data_dir_path->value(),
                         frame_skip->value(), no_sleep->is_set(), auto_term->is_set(),
                         eval_log->is_set(), map_db_path->value());

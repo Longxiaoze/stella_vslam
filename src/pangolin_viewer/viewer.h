@@ -3,14 +3,22 @@
 
 #include "pangolin_viewer/color_scheme.h"
 
-#include "openvslam/type.h"
+#include "stella_vslam/type.h"
 
 #include <memory>
 #include <mutex>
 
 #include <pangolin/pangolin.h>
 
-namespace openvslam {
+#include "stella_vslam/type.h"
+#include "stella_vslam/data/keyframe.h"
+#include "stella_vslam/data/landmark.h"
+#include "stella_vslam/data/landmark_plane.h"
+#include "stella_vslam/data/landmark_line.h"
+
+#include <yaml-cpp/yaml.h>
+
+namespace stella_vslam {
 
 class config;
 class system;
@@ -20,7 +28,7 @@ class frame_publisher;
 class map_publisher;
 } // namespace publish
 
-} // namespace openvslam
+} // namespace stella_vslam
 
 namespace pangolin_viewer {
 
@@ -33,9 +41,9 @@ public:
      * @param frame_publisher
      * @param map_publisher
      */
-    viewer(const std::shared_ptr<openvslam::config>& cfg, openvslam::system* system,
-           const std::shared_ptr<openvslam::publish::frame_publisher>& frame_publisher,
-           const std::shared_ptr<openvslam::publish::map_publisher>& map_publisher);
+    viewer(const std::shared_ptr<stella_vslam::config>& cfg, stella_vslam::system* system,
+           const std::shared_ptr<stella_vslam::publish::frame_publisher>& frame_publisher,
+           const std::shared_ptr<stella_vslam::publish::map_publisher>& map_publisher);
 
     /**
      * Main loop for window refresh
@@ -93,6 +101,13 @@ private:
      */
     void draw_landmarks();
 
+    // FW: visualization of the plane
+    void draw_landmarks_plane();
+    void draw_dense_pointcloud(stella_vslam::data::keyframe *kf);
+
+    // FW: visualization of the 3D line
+    void draw_landmarks_line();
+
     /**
      * Draw the camera frustum of the specified camera pose
      * @param gl_cam_pose_wc
@@ -105,7 +120,7 @@ private:
      * @param gl_cam_pose_wc
      * @param width
      */
-    void draw_camera(const openvslam::Mat44_t& cam_pose_wc, const float width) const;
+    void draw_camera(const stella_vslam::Mat44_t& cam_pose_wc, const float width) const;
 
     /**
      * Draw a frustum of a camera
@@ -130,11 +145,11 @@ private:
     void check_state_transition();
 
     //! system
-    openvslam::system* system_;
+    stella_vslam::system* system_;
     //! frame publisher
-    const std::shared_ptr<openvslam::publish::frame_publisher> frame_publisher_;
+    const std::shared_ptr<stella_vslam::publish::frame_publisher> frame_publisher_;
     //! map publisher
-    const std::shared_ptr<openvslam::publish::map_publisher> map_publisher_;
+    const std::shared_ptr<stella_vslam::publish::map_publisher> map_publisher_;
 
     const unsigned int interval_ms_;
 
@@ -163,6 +178,10 @@ private:
     std::unique_ptr<pangolin::Var<bool>> menu_terminate_;
     std::unique_ptr<pangolin::Var<float>> menu_frm_size_;
     std::unique_ptr<pangolin::Var<float>> menu_lm_size_;
+
+    // FW:
+    std::unique_ptr<pangolin::Var<bool>> _menu_show_plane;
+    std::unique_ptr<pangolin::Var<bool>> _menu_show_lines;
 
     // camera renderer
     std::unique_ptr<pangolin::OpenGlRenderState> s_cam_;
@@ -197,8 +216,17 @@ private:
 
     //! flag which indicates termination is requested or not
     bool terminate_is_requested_ = false;
+
     //! flag which indicates whether the main loop is terminated or not
     bool is_terminated_ = true;
+
+    // FW:
+    bool _draw_dense_pointcloud = false;
+    bool _draw_plane_normal = false;
+    double _square_size = 0.1;
+    float _transparency_alpha = 0.7;
+    const std::string _cfg_path = "./src/stella_vslam/planar_mapping_parameters.yaml";
+    void load_configuration(const std::string path);
 };
 
 inline void viewer::draw_line(const float x1, const float y1, const float z1,

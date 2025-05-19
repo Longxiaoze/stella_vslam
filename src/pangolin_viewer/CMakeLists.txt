@@ -2,18 +2,18 @@
 
 # Pangolin
 find_package(Pangolin REQUIRED)
-
+message(STATUS "Found Pangolin at: ${Pangolin_DIR}")
 # ----- Configure PangolinViewer library -----
 
 add_library(pangolin_viewer
-            ${CMAKE_CURRENT_SOURCE_DIR}/viewer.h
-            ${CMAKE_CURRENT_SOURCE_DIR}/color_scheme.h
-            ${CMAKE_CURRENT_SOURCE_DIR}/viewer.cc
-            ${CMAKE_CURRENT_SOURCE_DIR}/color_scheme.cc)
+            SHARED
+            viewer.h
+            color_scheme.h
+            viewer.cc
+            color_scheme.cc)
 
 set_target_properties(pangolin_viewer PROPERTIES
                       OUTPUT_NAME pangolin_viewer
-                      ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
                       LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
 target_include_directories(pangolin_viewer 
@@ -33,7 +33,7 @@ if(INSTALL_PANGOLIN_VIEWER)
     set(PANGOLIN_VIEWER_INCLUDE_INSTALL_DIR ${INCLUDES_DESTINATION}/pangolin_viewer)
 
     install(TARGETS pangolin_viewer
-            EXPORT ${OPENVSLAM_TARGETS_EXPORT_NAME}
+            EXPORT ${STELLA_VSLAM_TARGETS_EXPORT_NAME}
             RUNTIME DESTINATION ${RUNTIME_DESTINATION}
             LIBRARY DESTINATION ${LIBRARY_DESTINATION}
             ARCHIVE DESTINATION ${ARCHIVE_DESTINATION}

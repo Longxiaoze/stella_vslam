@@ -1,8 +1,8 @@
 {
-  "name": "openvslam-viewer",
+  "name": "stella_vslam-viewer",
   "version": "0.0.1",
   "description": "A cross-platform viewer for OpenVSLAM",
-  "repository": "https://github.com/xdspacelab/openvslam",
+  "repository": "https://github.com/xdspacelab/stella_vslam",
   "license": "BSD-2-Clause",
   "dependencies": {
     "express": "^4.16.2",
